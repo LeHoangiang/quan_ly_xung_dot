@@ -3,8 +3,7 @@ const {
     checkVoucher,
     addVoucher,
     getAllVouchers,
-    updateVoucherWithoutConflict,
-    updateWithConflictHandling
+
 } = require("./voucherController");
 
 const router = express.Router();
