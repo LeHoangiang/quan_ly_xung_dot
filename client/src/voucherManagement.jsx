@@ -7,12 +7,12 @@ function VoucherManagement() {
   const [expiryDate, setExpiryDate] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   // Add Voucher Function
   const handleAddVoucher = async () => {
-    if (!name || !discount || !expiryDate || !quantity) {
-      setError("Vui lòng nhập đầy đủ thông tin!");
+    if (!name || !discount || !expiryDate || quantity <= 0) {
+      setError("Vui lòng nhập đầy đủ thông tin và quantity phải lớn hơn 0!");
       setMessage("");
       return;
     }
@@ -29,7 +29,6 @@ function VoucherManagement() {
       setName("");
       setDiscount("");
       setExpiryDate("");
-      setQuantity("");
     } catch (err) {
       setError(err.response?.data?.message || "Lỗi khi thêm voucher!");
       setMessage("");
