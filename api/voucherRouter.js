@@ -13,6 +13,6 @@ const router = express.Router();
 router.post("/check", checkVoucher);
 router.post("/add", addVoucher);
 router.get("/list", getAllVouchers);
-router.put("/update/updateWithoutConflict", updateVoucherWithoutConflict);
-router.put("/update/updateWithConflictHandling", updateWithConflictHandling);
+
+
 module.exports = router;
