@@ -7,10 +7,11 @@ function VoucherManagement() {
   const [expiryDate, setExpiryDate] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   // Add Voucher Function
   const handleAddVoucher = async () => {
-    if (!name || !discount || !expiryDate) {
+    if (!name || !discount || !expiryDate || !quantity) {
       setError("Vui lòng nhập đầy đủ thông tin!");
       setMessage("");
       return;
@@ -22,12 +23,13 @@ function VoucherManagement() {
       
       console.log(formattedExpiryDate); // Log to verify the date format
 
-      const response = await axios.post("http://localhost:5000/voucher/add", { name, discount, expiryDate: formattedExpiryDate });
+      const response = await axios.post("http://localhost:5000/voucher/add", { name, discount, expiryDate: formattedExpiryDate, quantity });
       setMessage(response.data.message);
       setError("");
       setName("");
       setDiscount("");
       setExpiryDate("");
+      setQuantity("");
     } catch (err) {
       setError(err.response?.data?.message || "Lỗi khi thêm voucher!");
       setMessage("");
@@ -63,6 +65,13 @@ function VoucherManagement() {
           type="date"
           value={expiryDate}
           onChange={(e) => setExpiryDate(e.target.value)}
+          className="w-full border border-gray-300 p-2 mb-4 rounded"
+        />
+        <input
+          type="number"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          placeholder="Số lượng"
           className="w-full border border-gray-300 p-2 mb-4 rounded"
         />
         <button

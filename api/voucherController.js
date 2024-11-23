@@ -28,7 +28,7 @@ exports.checkVoucher = async (req, res) => {
 
 // Thêm voucher mới
 exports.addVoucher = async (req, res) => {
-  const { name, discount, expiryDate } = req.body;
+  const { name, discount, expiryDate, quantity } = req.body;
 
   try {
     const existingVoucher = await findVoucherByName(name);
@@ -40,7 +40,8 @@ exports.addVoucher = async (req, res) => {
       name,
       discount,
       expiryDate,
-      version: 0, // Khởi tạo version
+      quantity,
+      version: 0,
       valid: true,
     });
 

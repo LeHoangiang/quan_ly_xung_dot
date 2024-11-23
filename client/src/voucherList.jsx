@@ -3,6 +3,7 @@ import axios from "axios";
 
 function VoucherList() {
   const [vouchers, setVouchers] = useState([]);
+  const [selectedVoucher, setSelectedVoucher] = useState(null);
 
   useEffect(() => {
     const fetchVouchers = async () => {
@@ -17,6 +18,14 @@ function VoucherList() {
     fetchVouchers();
   }, []);
 
+  const handleVoucherClick = (voucher) => {
+    setSelectedVoucher(voucher);
+  };
+
+  const closeModal = () => {
+    setSelectedVoucher(null);
+  };
+
   return (
     <div className="h-screen flex flex-col items-center bg-gray-100">
       <h1 className="text-2xl font-bold mb-4">Danh Sách Voucher</h1>
@@ -25,7 +34,8 @@ function VoucherList() {
           {vouchers.map((voucher, index) => (
             <li
               key={index}
-              className="border-b py-2 flex justify-between items-center"
+              className="border-b py-2 flex justify-between items-center cursor-pointer"
+              onClick={() => handleVoucherClick(voucher)}
             >
               <span>{voucher.name}</span>
               <span
@@ -39,6 +49,20 @@ function VoucherList() {
           ))}
         </ul>
       </div>
+
+      {selectedVoucher && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-1/3">
+            <h2 className="text-xl font-bold mb-4">Thông Tin Voucher</h2>
+            <p><strong>Tên:</strong> {selectedVoucher.name}</p>
+            <p><strong>Giảm giá:</strong> {selectedVoucher.discount}%</p>
+            <p><strong>Ngày hết hạn:</strong> {new Date(selectedVoucher.expiryDate).toLocaleDateString()}</p>
+            <p><strong>Số lượng:</strong> {selectedVoucher.quantity}</p>
+            <p><strong>Trạng thái:</strong> {selectedVoucher.valid ? "Hợp lệ" : "Hết hạn"}</p>
+            <button onClick={closeModal} className="mt-4 bg-red-500 text-white py-2 px-4 rounded">Đóng</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
