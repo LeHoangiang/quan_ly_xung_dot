@@ -34,6 +34,34 @@ const connectDB = async () => {
     process.exit(1); // Dừng ứng dụng nếu kết nối thất bại
   }
 };
+// router.post('/add', async (req, res) => {
+//   try {
+//     const { name, discount, expiryDate, quantity, version } = req.body;
+    
+//     // Kiểm tra version trong database
+//     const existingVoucher = await Voucher.findOne({ name });
+//     if (existingVoucher && existingVoucher.version !== version) {
+//       return res.status(409).json({
+//         versionConflict: true,
+//         message: "Version conflict detected"
+//       });
+//     }
+
+//     // Tạo voucher mới với version tăng thêm 1
+//     const newVoucher = new Voucher({
+//       name,
+//       discount,
+//       expiryDate,
+//       quantity,
+//       version: version + 1
+//     });
+
+//     await newVoucher.save();
+//     res.json({ message: "Voucher added successfully" });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
 // Start Server
 const PORT = process.env.PORT || 5000;

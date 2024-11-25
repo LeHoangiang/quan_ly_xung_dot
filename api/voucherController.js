@@ -77,3 +77,47 @@ exports.deleteVoucher = async (req, res) => {
     res.status(500).json({ message: "Không thể xóa voucher.", error: err.message });
   }
 };
+// Thêm hàm updateVoucher
+exports.updateVoucher = async (req, res) => {
+  const { id } = req.params;
+  const { name, discount, expiryDate, quantity, version } = req.body;
+  console.log("Update data:", { name, discount, expiryDate, quantity, version }); // Debug log
+  try {
+      // Kiểm tra version trong database
+      const existingVoucher = await Voucher.findById(id);
+      if (!existingVoucher) {
+          return res.status(404).json({ message: "Không tìm thấy voucher!" });
+      }
+
+      if (existingVoucher.version !== version) {
+          return res.status(409).json({
+              versionConflict: true,
+              message: "Dữ liệu đã được người khác thay đổi. Vui lòng tải lại trang!"
+          });
+      }
+
+      // Cập nhật voucher với version mới
+      const updatedVoucher = await Voucher.findByIdAndUpdate(
+          id,
+          {
+              name,
+              discount,
+              expiryDate,
+              quantity,
+              version: version + 1  // Tăng version
+          },
+          { new: true }  // Trả về document đã được cập nhật
+      );
+
+      res.json({
+          message: "Voucher đã được cập nhật thành công!",
+          voucher: updatedVoucher
+      });
+  } catch (err) {
+      console.error("Update error:", err);
+      res.status(500).json({
+          message: "Lỗi khi cập nhật voucher!",
+          error: err.message
+      });
+  }
+};
